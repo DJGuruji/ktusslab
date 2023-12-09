@@ -1,0 +1,42 @@
+DATA SEGMENT
+    STRING1 DB 11H,22H,33H,44H,55H ; Sample string
+    MSG1 DB "FOUND$"                 ; Message when found
+    MSG2 DB "NOTFOUND$"              ; Message when not found
+    SE DB 33H                        ; Search element
+DATA ENDS
+
+PRINT MACRO MSG
+    MOV AH, 09H       ; DOS function to print string
+    LEA DX, MSG       ; Load address of the message into DX
+    INT 21H           ; Call DOS interrupt to print the message
+    INT 3             ; Debug interrupt
+    END               ; End of the macro
+CODE SEGMENT
+    ASSUME CS:CODE, DS:DATA
+START:
+    MOV AX, DATA      ; Set up data segment
+    MOV DS, AX
+
+    MOV AL, SE        ; Element to search
+    LEA SI, STRING1   ; Load address of the string into SI
+    MOV CX, 05H       ; Number of elements in the string
+
+UP:
+    MOV BL, [SI]      ; Load the byte from the current position
+    CMP AL, BL        ; Compare AL with the byte in BL
+    JE F0             ; Jump if equal to F0 (found)
+    INC SI            ; Move to the next position in the string
+    DEC CX            ; Decrement the counter
+    JNZ UP            ; Jump if the counter is not zero (more elements to check)
+    
+    ; If the loop completes and the element is not found
+    PRINT MSG2        ; Print "NOTFOUND$"
+    JMP END1          ; Jump to END1
+
+F0:
+    PRINT MSG1        ; Print "FOUND$"
+
+END1:
+    INT 3             ; Debug interrupt
+CODE ENDS
+END START

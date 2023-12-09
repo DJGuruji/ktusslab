@@ -1,0 +1,37 @@
+DATA SEGMENT
+    STRING1 DB 99H, 12H, 56H, 45H, 36H  ; Sample array for sorting
+DATA ENDS
+
+CODE SEGMENT
+    ASSUME CS:CODE, DS:DATA
+START:
+    MOV AX, DATA     ; Set up data segment
+    MOV DS, AX
+
+    MOV CH, 04H      ; Outer loop counter (number of passes)
+
+UP2:
+    MOV CL, 04H      ; Inner loop counter (number of comparisons)
+    LEA SI, STRING1  ; Load effective address of STRING1 into SI
+
+UP1:
+    MOV AL, [SI]     ; Load byte at SI into AL (current element)
+    MOV BL, [SI + 1] ; Load byte at SI+1 into BL (next element)
+    CMP AL, BL       ; Compare AL with BL
+    JNC DOWN         ; Jump to DOWN if no carry (AL >= BL)
+
+    ; Swap elements if AL < BL
+    MOV DL, [SI + 1] ; Load next element into DL
+    XCHG [SI], DL    ; Exchange values at SI and DL
+    MOV [SI + 1], DL ; Store swapped value back at SI+1
+
+DOWN:
+    INC SI            ; Move to the next element
+    DEC CL            ; Decrement the inner loop counter
+    JNZ UP1           ; Jump to UP1 if the inner loop counter is not zero
+
+    DEC CH            ; Decrement the outer loop counter
+    JNZ UP2           ; Jump to UP2 if the outer loop counter is not zero
+
+CODE ENDS
+END START

@@ -1,0 +1,20 @@
+DATA SEGMENT
+    MSG1 DB "HELLO WORLD$"
+DATA ENDS
+
+ASSUME CS:CODE, DS:DATA
+
+CODE SEGMENT
+START:
+    MOV AX, DATA    ; Set up data segment
+    MOV DS, AX
+
+    MOV DX, OFFSET MSG1  ; Load offset of MSG1 into DX
+    MOV AH, 09H           ; DOS function to print string
+    INT 21H               ; Call DOS interrupt to print MSG1
+
+    MOV AH, 4CH           ; DOS function to terminate the program
+    INT 21H               ; Call DOS interrupt to terminate
+
+CODE ENDS
+END START

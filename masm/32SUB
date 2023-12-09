@@ -1,0 +1,30 @@
+DATA SEGMENT
+    LIST DD 12121212H, 55555555H  ; Example 32-bit values
+    N3 DD ?
+    N4 DD ?
+DATA ENDS
+
+CODE SEGMENT
+    ASSUME CS:CODE, DS:DATA
+START:
+    MOV AX, DATA      ; Set up data segment
+    MOV DS, AX
+
+    XOR EAX, EAX      ; Clear EAX (32-bit accumulator)
+    MOV ECX, EAX      ; Clear ECX (32-bit counter)
+
+    MOV EAX, [LIST]    ; Load the first 32-bit value into EAX
+    SUB EAX, [LIST+4]  ; Subtract the second 32-bit value from EAX
+    MOV [N3], EAX      ; Store the result in N3
+
+    JC STOP            ; Jump if there is a borrow (overflow)
+
+    INC ECX            ; Increment ECX if there is no borrow
+
+STOP:
+    MOV [N4], ECX      ; Store the value of ECX in N4
+    MOV AH, 4CH        ; Set the function code for program termination
+    INT 21H            ; Generate an interrupt to terminate the program
+
+CODE ENDS
+END START

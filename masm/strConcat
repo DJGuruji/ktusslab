@@ -1,0 +1,22 @@
+DATA SEGMENT
+    MSG1 DB "HELLO$"
+    MSG2 DB "WORLD$"
+DATA ENDS
+
+ASSUME CS:CODE, DS:DATA
+
+CODE SEGMENT
+START:
+    MOV AX, DATA    ; Set up data segment
+    MOV DS, AX
+
+    MOV DX, OFFSET MSG1  ; Load offset of MSG1 into DX
+    MOV AH, 09H           ; DOS function to print string
+    INT 21H               ; Call DOS interrupt to print MSG1
+
+    MOV DX, OFFSET MSG2  ; Load offset of MSG2 into DX
+    MOV AH, 09H           ; DOS function to print string
+    INT 21H               ; Call DOS interrupt to print MSG2
+
+CODE ENDS
+END START

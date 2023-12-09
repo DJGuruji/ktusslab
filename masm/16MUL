@@ -1,0 +1,21 @@
+DATA SEGMENT
+    N1 DW 8888H
+    N2 DW 4444H
+    N3 DW ?
+DATA ENDS
+
+CODE SEGMENT
+    ASSUME CS:CODE, DS:DATA
+START:
+    MOV AX, DATA      ; Set up data segment
+    MOV DS, AX
+
+    MOV AX, N1        ; Load N1 into AX
+    MOV BX, N2        ; Load N2 into BX
+    IMUL BX           ; Signed multiplication of AX and BX
+    MOV N3, AX        ; Store the result in N3
+
+    ; Your further instructions can go here
+
+CODE ENDS
+END START

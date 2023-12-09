@@ -1,0 +1,29 @@
+DATA SEGMENT
+    N1 DW 1731H
+    N2 DW 9212H
+    N3 DW ?
+DATA ENDS
+
+CODE SEGMENT
+    ASSUME CS:CODE, DS:DATA
+START:
+    MOV AX, DATA      ; Set up data segment
+    MOV DS, AX
+
+    XOR AX, AX        ; Clear AX
+    MOV BX, AX        ; Clear BX
+
+    MOV AX, N1        ; Load N1 into AX
+    ADD AX, N2        ; Add N2 to AX
+    MOV N3, AX        ; Store the result in N3
+
+    JNC STOP          ; Jump if no carry (no overflow)
+
+    INC BX            ; Increment BX if there is a carry
+
+STOP:
+    MOV CX,AX
+    MOV AH,4CH
+    INT 21H
+CODE ENDS
+END START
