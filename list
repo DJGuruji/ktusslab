@@ -1,6 +1,20 @@
+cpu
+  fcfs
+  sjf
+  rr
+  priority
+
+bankers
+disk
+  fcfs
+  scan
+  cscan
+
 pass1
 pass2
 abs
-macro pass1
-macro pas2
+macro1
+macro2
+
 masm
+kit
